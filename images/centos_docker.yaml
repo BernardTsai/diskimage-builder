@@ -1,0 +1,42 @@
+---
+# The next line will enable debug trace - which is A LOT!
+DIB_DEBUG_TRACE: "1"
+
+# environment variables for the devuser element
+DIB_DEV_USER_USERNAME:     "devuser"
+DIB_DEV_USER_PASSWORD:     "devpassword"
+DIB_DEV_USER_SHELL:        "/bin/bash"
+DIB_DEV_USER_PWDLESS_SUDO: "yes"
+
+# Hack to make it work in a docker container (to be fixed)
+DIB_JOURNAL_SIZE: "4"
+
+DIB_BLOCK_DEVICE_CONFIG: |
+  - local_loop:
+      name: image0
+
+  - partitioning:
+      base: image0
+      label: mbr
+      partitions:
+        - name: root
+          flags: [ boot, primary ]
+          size: 100%
+          mkfs:
+            name: mkfs_root
+            opts: "-O ^64bit,^metadata_csum"
+            mount:
+              mount_point: /
+              fstab:
+                options: "defaults"
+                fsck-passno: 1
+
+DIB_RELEASE: ""
+
+# Configure cloud-init-datasources element
+DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive, OpenStack"
+
+# Required by diskimage-builder to discover element collections
+ELEMENTS_PATH: "tripleo-image-elements/elements:heat-agents:."
+ELEMENTS:      "vm centos7 selinux-permissive cloud-init cloud-init-datasources devuser custom"
+PARAMETERS:    "--root-label debian-rootfs"

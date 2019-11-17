@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Disable selinux
+setenforce 0
+sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
+# Start K8s dep kernel modules
+modprobe overlay
+modprobe br_netfilter
+if [ ! -f /boot/config-$(uname -r) ]; then  var=`ls /boot/config* | head -1`; ln -sf $var /boot/config-$(uname -r) ; fi
+
+# Handle sysctl system params (1/4)
+cat > "/etc/sysctl.d/99-kubernetes-cri.conf" <<EOF
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward                 = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+EOF
+
+# Handle sysctl system params (2/4)
+sed -i 's/^(net.ipv4.ip_forward\s+=\s+0\s+.*)$/#&/' /etc/sysctl.conf
+
+# Handle sysctl system params (3/4)
+sed -i 's/^(net.bridge.bridge-nf-call-iptables\s+=\s+0\s+.*)$/#&/' /etc/sysctl.conf
+
+# Handle sysctl system params (4/4)
+sed -i 's/^(net.bridge.bridge-nf-call-ip6tables\s+=\s+0\s+.*)$/#&/' /etc/sysctl.conf
+
+# Update Sysctl System Params
+sysctl --system
+
+# Disable SWAP since kubernetes can't work with swap enabled (1/2)
+swapoff -a
+
+# Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+sed -i 's/^(.+?\sswap\s+swap\s+.*)$/#&/' /etc/fstab
+
+# Disable DNS lookup and enable password login for root in sshd
+sed -i 's/^UseDNS.*$/UseDNS no/' /etc/ssh/sshd_config
+sed -i 's/^PasswordAuthentication.*$/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/^PermitRootLogin.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Restart ssh daemon
+service sshd restart

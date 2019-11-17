@@ -1,0 +1,9 @@
+---
+# The next line will enable debug trace - which is A LOT!
+DIB_DEBUG_TRACE: "1"
+
+# Hack to make it work in a docker container (to be fixed)
+DIB_JOURNAL_SIZE: "4"
+
+# Required by diskimage-builder to discover element collections
+ELEMENTS:      "vm ubuntu-minimal"
