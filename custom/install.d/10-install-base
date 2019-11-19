@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if base installation is required
+if ["$DIB_CUSTOM_BASE" != ""]
+then
+  exit 0;
+fi
+
 # Disable selinux
 setenforce 0
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux

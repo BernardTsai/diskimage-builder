@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if docker installation is required
+if ["$DIB_CUSTOM_DOCKER" != ""]
+then
+  exit 0;
+fi
+
 # Install required packages
 yum install -y yum-utils
 yum install -y device-mapper-persistent-data

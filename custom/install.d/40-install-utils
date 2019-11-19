@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# check if base installation is required
+if ["$DIB_CUSTOM_UTILS" != ""]
+then
+  exit 0;
+fi
+
+# install git, ansible and jq
+yum install ansible git jq
+
+# install pyyaml
+pip install pyyaml

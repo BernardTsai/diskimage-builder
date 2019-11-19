@@ -38,11 +38,18 @@ fi
 
 # ------------------------------------------------------------------------------
 
+FILE_NAME=$(basename "$1")
+IMAGE_NAME="${FILE_NAME%.*}"
+
+# ------------------------------------------------------------------------------
+
 # 0. Change current directory to script directory
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # 1. Cleanup work directory
-rm -rf "./work/*" 2>&1 > /dev/null
+rm -rf "./work/$IMAGE_NAME.sh"    2>&1 > /dev/null
+rm -rf "./work/$IMAGE_NAME.log"   2>&1 > /dev/null
+rm -rf "./work/$IMAGE_NAME.qcow2" 2>&1 > /dev/null
 
 # 2. Create a small script to convert yaml into environment variables => image.sh
 cat $1 | python -c "$(cat <<_EOF_
@@ -62,7 +69,7 @@ for var in variables:
 print( "set -x" )
 print( "disk-image-create \$ELEMENTS \$PARAMETERS" )
 _EOF_
-)" > work/image.sh
+)" > work/$IMAGE_NAME.sh
 
 # 3. Remove the diskimage_builder container
 docker kill diskimage_builder 2>&1 > /dev/null || true
@@ -78,10 +85,10 @@ then
 fi
 
 # 6. Execute diskimage-create command
-docker exec -i diskimage_builder /bin/bash < work/image.sh | tee work/image.log
+docker exec -i diskimage_builder /bin/bash < work/image.sh | tee work/$IMAGE_NAME.log
 
 # 7. Copy the created image to the local filesystem
-docker cp diskimage_builder:/opt/builder/image.qcow2 work
+docker cp diskimage_builder:/opt/builder/image.qcow2 work/$IMAGE_NAME.qcow2
 
 # 8. Remove the diskimage_builder container
 docker kill diskimage_builder 2>&1 > /dev/null || true

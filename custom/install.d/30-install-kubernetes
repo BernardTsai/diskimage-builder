@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if base installation is required
+if ["$DIB_CUSTOM_KUBERNETES" != ""]
+then
+  exit 0;
+fi
+
 # Adding K8s repo...
 cat > /etc/yum.repos.d/kubernetes.repo <<EOF
 [kubernetes]
