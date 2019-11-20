@@ -40,7 +40,7 @@ fi
 
 FILE_NAME=$(basename "$1")
 IMAGE_NAME="${FILE_NAME%.*}"
-
+echo $IMAGE_NAME
 # ------------------------------------------------------------------------------
 
 # 0. Change current directory to script directory
@@ -85,10 +85,11 @@ then
 fi
 
 # 6. Execute diskimage-create command
-docker exec -i diskimage_builder /bin/bash < work/image.sh | tee work/$IMAGE_NAME.log
+docker exec -i diskimage_builder /bin/bash < work/$IMAGE_NAME.sh | tee work/$IMAGE_NAME.log
 
 # 7. Copy the created image to the local filesystem
 docker cp diskimage_builder:/opt/builder/image.qcow2 work/$IMAGE_NAME.qcow2
 
 # 8. Remove the diskimage_builder container
 docker kill diskimage_builder 2>&1 > /dev/null || true
+docker rm   diskimage_builder 2>&1 > /dev/null || true

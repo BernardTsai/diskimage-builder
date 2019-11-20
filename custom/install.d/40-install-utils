@@ -1,13 +1,17 @@
 #!/bin/bash
 
 # check if base installation is required
-if ["$DIB_CUSTOM_UTILS" != ""]
+if [ "$DIB_CUSTOM_UTILS" != "" ]
 then
   exit 0;
 fi
 
-# install git, ansible and jq
-yum install ansible git jq
+# install git, ansible, jq, pip
+yum install epel-release -y
+yum install ansible -y
+yum install git -y
+yum install jq -y
+yum install python-pip -y
 
 # install pyyaml
 pip install pyyaml

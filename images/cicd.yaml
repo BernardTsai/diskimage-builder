@@ -50,10 +50,10 @@ DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive, OpenStack"
 DIB_CUSTOM_BASE:           "true"
 DIB_CUSTOM_DOCKER:         "true"
 DIB_CUSTOM_IMAGE_REGISTRY: "true"
-DIB_CUSTOM_KUBERNETES:     "true"
+# DIB_CUSTOM_KUBERNETES:     "true"
 DIB_CUSTOM_CHART_REGISTRY: "true"
 DIB_CUSTOM_CHART_UTILS:    "true"
-DIB_CUSTOM_CHART_BUILDER:  "true"
+# DIB_CUSTOM_CHART_BUILDER:  "true"
 
 # Required by diskimage-builder to discover element collections
 ELEMENTS_PATH: "tripleo-image-elements/elements:heat-agents:."

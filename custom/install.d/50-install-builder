@@ -1,13 +1,16 @@
 #!/bin/bash
 
 # check if diskimage-builder installation is required
-if ["$DIB_CUSTOM_BUILDER" != ""]
+if [ "$DIB_CUSTOM_BUILDER" != "" ]
 then
   exit 0;
 fi
 
+# create /usr/local/bin
+mkdir -p /usr/local/bin
+
 # create setup script to create diskimage-builder image
-cat /usr/local/bin/setup_builder.sh <<EOF
+cat > /usr/local/bin/setup_builder.sh << EOF
 # check if the image has already been built
 if [[ "$(docker images -q tsai/diskimage-builder 2> /dev/null)" == "" ]]; then
   # clone repo into /opt/diskimage-builder
@@ -20,4 +23,4 @@ if [[ "$(docker images -q tsai/diskimage-builder 2> /dev/null)" == "" ]]; then
   ./build_diskimage_builder_container.sh
 fi
 EOF
-chmod a+x /usr/local/bin/setup_builder.sh 
+chmod a+x /usr/local/bin/setup_builder.sh

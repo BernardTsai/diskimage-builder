@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # check if chart registry installation is required
-if ["$DIB_CUSTOM_CHART_REGISTRY" != ""]
+if [ "$DIB_CUSTOM_CHART_REGISTRY" != "" ]
 then
   exit 0;
 fi
@@ -10,8 +10,11 @@ fi
 mkdir -p /opt/chartmuseum/charts
 chmod 777 -R /opt/chartmuseum/charts
 
+# create /usr/local/bin
+mkdir -p /usr/local/bin
+
 # create start script for chartmuseum
-cat > /usr/local/bin/start_chartmuseum.sh <<EOF
+cat > /usr/local/bin/start_chartmuseum.sh << EOF
 docker stop chartmuseum
 docker rm chartmuseum
 docker pull chartmuseum/chartmuseum
@@ -20,7 +23,7 @@ EOF
 chmod a+x /usr/local/bin/start_chartmuseum.sh
 
 # create stop script for chartmuseum
-cat > /usr/local/bin/stop_chartmuseum.sh <<EOF
+cat > /usr/local/bin/stop_chartmuseum.sh << EOF
 docker stop chartmuseum
 docker rm chartmuseum
 EOF
@@ -29,6 +32,6 @@ chmod a+x /usr/local/bin/stop_chartmuseum.sh
 # install helm v3
 cd /tmp
 curl https://get.helm.sh/helm-v3.0.0-rc.3-linux-amd64.tar.gz > /tmp/helm-v3.0.0-rc.3-linux-amd64.tar.gz
-tar xvf /tmphelm-v3.0.0-rc.3-linux-amd64.tar.gz
+tar xvf /tmp/helm-v3.0.0-rc.3-linux-amd64.tar.gz
 cp /tmp/linux-amd64/helm /usr/local/bin/helm
 chmod a+x /usr/local/bin/helm

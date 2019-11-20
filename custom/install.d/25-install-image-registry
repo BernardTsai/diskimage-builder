@@ -1,14 +1,16 @@
 #!/bin/bash
 
 # check if image registry installation is required
-if ["$DIB_CUSTOM_IMAGE_REGISTRY" != ""]
+if [ "$DIB_CUSTOM_IMAGE_REGISTRY" != "" ]
 then
   exit 0;
 fi
 
+# create /usr/local/bin
+mkdir -p /usr/local/bin
 
 # create start script for image registry
-cat > /usr/local/bin/start_registry.sh <<EOF
+cat > /usr/local/bin/start_registry.sh << EOF
 docker stop registry
 docker rm registry
 docker pull registry
@@ -17,7 +19,7 @@ EOF
 chmod a+x /usr/local/bin/start_registry.sh
 
 # create stop script for chartmuseum
-cat > /usr/local/bin/stop_registry.sh <<EOF
+cat > /usr/local/bin/stop_registry.sh << EOF
 docker stop registry
 docker rm registry
 EOF

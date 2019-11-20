@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # check if base installation is required
-if ["$DIB_CUSTOM_KUBERNETES" != ""]
+if [ "$DIB_CUSTOM_KUBERNETES" != "" ]
 then
   exit 0;
 fi
 
 # Adding K8s repo...
-cat > /etc/yum.repos.d/kubernetes.repo <<EOF
+cat > /etc/yum.repos.d/kubernetes.repo << EOF
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
