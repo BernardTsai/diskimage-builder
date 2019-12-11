@@ -7,20 +7,21 @@ LABEL maintainer="bernard@tsai.eu"
 WORKDIR /opt/builder
 
 # Install required packages
-RUN apt-get update                  && \
-    apt-get upgrade -y              && \
-    apt-get install -y git          && \
-    apt-get install -y sudo         && \
-    apt-get install -y qemu         && \
-    apt-get install -y python       && \
-    apt-get install -y python-pip   && \
-    apt-get install -y python3      && \
-    apt-get install -y python3-pip  && \
-    apt-get install -y debootstrap  && \
-    apt-get install -y gdisk        && \
-    apt-get install -y kpartx       && \
-    apt-get install -y curl         && \
-    apt-get install -y yum          && \
+RUN apt-get update                             && \
+    apt-get upgrade -y                         && \
+    apt-get install -y git                     && \
+    apt-get install -y sudo                    && \
+    apt-get install -y qemu                    && \
+    apt-get install -y python                  && \
+    apt-get install -y python-pip              && \
+    apt-get install -y python3                 && \
+    apt-get install -y python3-pip             && \
+    apt-get install -y debootstrap             && \
+    apt-get install -y gdisk                   && \
+    apt-get install -y kpartx                  && \
+    apt-get install -y curl                    && \
+    apt-get install -y squashfs-tools          && \
+    apt-get install -y yum                     && \
     apt-get install -y yum-utils
 
 # Install required python packages
